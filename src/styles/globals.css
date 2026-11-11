@@ -1,0 +1,519 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@media (hover: hover) and (pointer: fine) {
+  *,
+  body {
+    cursor: none;
+  }
+}
+
+@theme {
+  /* Palette: Cairo night. Change these to re-skin the whole site. */
+  --color-primary: #e3a33a; /* ochre accent, 8.7:1 on night */
+  --color-primary-dark: #4a3412; /* preloader wipe, deep ochre */
+  --color-black: #0d1014; /* page ground (ink-blue night) */
+  --color-white: #e9e5da; /* text (sand), 15.2:1 on night */
+  --container-max-width-sm: 640px;
+  --container-max-width-md: 768px;
+  --container-max-width-lg: 1024px;
+  --container-max-width-xl: 1148px;
+  --container-max-width-2xl: 1148px;
+  --container-center: "true";
+  --padding-section: 250px;
+  --font-mono: var(--font-jetbrains-mono);
+  --font-anton: var(--font-anton-display);
+  --animate-shine: shine 2s linear infinite;
+
+  @keyframes shine {
+    0% {
+      background-position: 100%;
+    }
+    100% {
+      background-position: -100%;
+    }
+  }
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  max-width: var(--container-max-width-2xl);
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: var(--container-max-width-sm);
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: var(--container-max-width-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: var(--container-max-width-lg);
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: var(--container-max-width-xl);
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.markdown-text ul {
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+  list-style-type: disc;
+}
+.animateUp {
+  will-change: transform;
+}
+
+@keyframes project-preview-enter {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes project-preview-exit {
+  to {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+}
+
+.project-preview-enter {
+  animation: project-preview-enter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.project-preview-exit {
+  animation: project-preview-exit 360ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-preview-enter,
+  .project-preview-exit {
+    animation: none;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(180px);
+  }
+}
+@keyframes floatReverse {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-180px);
+  }
+}
+@keyframes float2 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(28px);
+  }
+}
+@keyframes floatReverse2 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-28px);
+  }
+}
+
+.star-spike {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0.45;
+}
+.star-spike--v {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.markdown-body pre,
+.markdown-body pre * {
+  font-family: var(--font-jetbrains-mono), monospace;
+}
+
+.editor-container {
+  height: 600px;
+  overflow: hidden;
+}
+
+.editor-container .cm-editor {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-container .cm-panels-top,
+.editor-container .cm-panels-bottom {
+  flex: 0 0 auto;
+}
+
+.editor-container .cm-scroller {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+pre::selection,
+code::selection,
+pre *::selection,
+code *::selection,
+.hljs::selection,
+.hljs *::selection {
+  background-color: hsl(var(--primary)) !important;
+  color: var(--color-black) !important;
+}
+
+.markdown-body ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+
+.markdown-body ol {
+  list-style: decimal;
+  padding-left: 1.5rem;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: var(--color-primary);
+  --primary-foreground: var(--color-black); /* dark text on the ochre accent */
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: var(--color-primary);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    @apply rounded-md border border-gray-500 bg-black text-white;
+    -webkit-box-shadow: 0 0 0 1000px theme("colors.black") inset;
+    -webkit-text-fill-color: theme("colors.white");
+    caret-color: theme("colors.white");
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
+
+/* ---------- Starry Night ---------- */
+
+/* Soft breathing glow over each painted halo star (transform + opacity only). */
+.star-glow {
+  position: absolute;
+  width: var(--r);
+  height: var(--r);
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(246 220 143 / 0.35) 0%, rgb(227 163 58 / 0.12) 40%, transparent 70%);
+  mix-blend-mode: screen;
+  animation: star-breathe 6s ease-in-out infinite alternate;
+}
+@keyframes star-breathe {
+  from {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+/* Painted-canvas texture over the whole site: fine grain plus long horizontal brush drag.
+   Static image, so it costs one paint; pointer-events off so it never blocks clicks. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004 0.09' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23b)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star-glow {
+    animation: none;
+  }
+}
+
+/* ---------- /admin (local only) ----------
+   The site hides the system cursor (custom cursor), blocks text selection and lays a texture over everything.
+   None of that suits a form, so the admin page turns them back off. */
+.admin-root,
+.admin-root * {
+  cursor: auto;
+  user-select: text;
+}
+.admin-root :is(a, button, label, [role="switch"]) {
+  cursor: pointer;
+}
+body:has(.admin-root)::after {
+  display: none;
+}
+
+/* ---------- Preloader: meteor shower ---------- */
+
+/* Deep night behind the shower, slightly lighter in the middle where the light will bloom. */
+.preloader {
+  /* The wake: a V-shaped opening with its tip at the star's head (--hx, --hy), pointing back along the trail
+     (--back), half-open by --wake. At --wake 0 it is a thin cut; at 90deg+ it covers the screen. The 1.5deg
+     ramps on each side soften the edges. Set by preloader.tsx. */
+  --hx: -200vmax;
+  --hy: -200vmax;
+  --back: 294deg;
+  --wake: 0deg;
+  background: radial-gradient(ellipse at 50% 50%, #142247 0%, #0d1530 45%, #0d1014 100%);
+  -webkit-mask-image: conic-gradient(
+    from calc(var(--back) - var(--wake) - 1.5deg) at var(--hx) var(--hy),
+    #000 0deg,
+    transparent 1.5deg,
+    transparent calc(var(--wake) * 2 + 1.5deg),
+    #000 calc(var(--wake) * 2 + 3deg)
+  );
+  mask-image: conic-gradient(
+    from calc(var(--back) - var(--wake) - 1.5deg) at var(--hx) var(--hy),
+    #000 0deg,
+    transparent 1.5deg,
+    transparent calc(var(--wake) * 2 + 1.5deg),
+    #000 calc(var(--wake) * 2 + 3deg)
+  );
+}
+
+/* One meteor: a thin gold tail ending in a white-hot head. GSAP slides it along the tilted pivot. */
+.meteor {
+  position: absolute;
+  top: -1px;
+  right: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgb(227 163 58 / 0.3) 40%, #f6dc8f 85%, #ffffff);
+  will-change: transform, opacity;
+}
+.meteor::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -3px;
+  width: 6px;
+  height: 6px;
+  translate: 0 -50%;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 8px 3px rgb(255 246 214 / 0.95),
+    0 0 24px 8px rgb(240 196 107 / 0.5);
+}
+
+/* The big star: same shape as a meteor, but a long thick tail and a blazing head.
+   transform-origin at the right end so it swells from its head when it flares. */
+.big-star {
+  position: absolute;
+  top: -3px;
+  right: 0;
+  width: 60vmax;
+  height: 6px;
+  border-radius: 999px;
+  transform-origin: 100% 50%;
+  background: linear-gradient(90deg, transparent, rgb(227 163 58 / 0.35) 35%, #f6dc8f 80%, #ffffff);
+  filter: drop-shadow(0 0 6px rgb(246 220 143 / 0.8));
+  will-change: transform, opacity;
+}
+.big-star::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -11px;
+  width: 22px;
+  height: 22px;
+  translate: 0 -50%;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 18px 8px rgb(255 255 255 / 0.95),
+    0 0 60px 24px rgb(255 246 214 / 0.8),
+    0 0 140px 60px rgb(240 196 107 / 0.5);
+}
+
+/* The star's head: the big star and its wake lines hang off this point and travel with it. */
+.wake-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* One wake line: a wavy SVG ripple, bright at the star's head and fading out behind it (the mask does the
+   fade, so the waves can slide underneath it). GSAP rotates the line about the head to the wake's V angle. */
+.wake-line {
+  position: absolute;
+  top: -6px;
+  right: 0;
+  width: 160vmax;
+  height: 12px;
+  transform-origin: 100% 50%;
+  -webkit-mask-image: linear-gradient(to left, #000, rgb(0 0 0 / 0.6) 18%, transparent 65%);
+  mask-image: linear-gradient(to left, #000, rgb(0 0 0 / 0.6) 18%, transparent 65%);
+  filter: drop-shadow(0 0 4px rgb(246 220 143 / 0.7));
+  will-change: transform;
+}
+.wake-line svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.wake-wave {
+  fill: none;
+  stroke: #f6dc8f;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke; /* stays a crisp 1.5px however the SVG is stretched */
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}

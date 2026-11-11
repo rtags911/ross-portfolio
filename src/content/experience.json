@@ -1,0 +1,29 @@
+[
+  {
+    "_id": "job-1",
+    "title": "Tech Support Agent",
+    "company": "Feit electric ",
+    "startDate": "07/2025",
+    "endDate": "Present",
+    "sortIndex": 1,
+    "hide": false
+  },
+  {
+    "_id": "job-2",
+    "title": "Web Developer",
+    "company": "Kapwa Marketing",
+    "startDate": "9/2024",
+    "endDate": "12/2024",
+    "sortIndex": 2,
+    "hide": false
+  },
+  {
+    "_id": "job-1794221507322",
+    "title": "Front End Developer",
+    "company": "HSI Technologies",
+    "startDate": "06/2023",
+    "endDate": "05/2024",
+    "sortIndex": 3,
+    "hide": false
+  }
+]

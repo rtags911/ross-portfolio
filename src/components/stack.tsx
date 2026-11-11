@@ -1,0 +1,128 @@
+"use client";
+
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+import Image from "next/image";
+import { useLayoutEffect, useRef } from "react";
+
+import SectionTitle from "@/src/components/section-title";
+import { useGetStack } from "@/src/hooks/use-content";
+
+import { LoaderSmall } from "./loader-small";
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+export default function Stack() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { data: stack = [], isLoading } = useGetStack();
+
+  useLayoutEffect(() => {
+    if (!isLoading && stack.length > 0) {
+      ScrollTrigger.refresh();
+    }
+  }, [isLoading, stack]);
+
+  useGSAP(
+    () => {
+      if (!stack.length) return;
+
+      const slideUpEl = containerRef.current?.querySelectorAll(".slide-up");
+      if (!slideUpEl?.length) return;
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 80%",
+          end: "bottom 80%",
+          scrub: 0.5,
+        },
+      });
+
+      tl.from(slideUpEl, {
+        opacity: 0,
+        y: 40,
+        ease: "none",
+        stagger: 0.4,
+      });
+
+      return () => {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+      };
+    },
+    { scope: containerRef, dependencies: [stack] }
+  );
+
+  useGSAP(
+    () => {
+      if (!stack.length) return;
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "bottom 50%",
+          end: "bottom 10%",
+          scrub: 1,
+        },
+      });
+
+      tl.to(containerRef.current, {
+        y: -150,
+        opacity: 0,
+      });
+
+      return () => {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+      };
+    },
+    { scope: containerRef, dependencies: [stack] }
+  );
+
+  return (
+    <section id="my-stack" ref={containerRef}>
+      <div className="container">
+        <SectionTitle title="My Stack" />
+
+        {isLoading ? (
+          <LoaderSmall />
+        ) : stack.length === 0 ? (
+          <p className="dark slide-up text-muted-foreground py-10 text-3xl">
+            There&apos;s no stack added yet
+          </p>
+        ) : (
+          <div className="space-y-20">
+            {stack.map(({ type, items }) => (
+              <div className="grid md:grid-cols-12" key={type}>
+                <div className="mb-10 md:col-span-5 md:mb-0">
+                  <p className="slide-up text-5xl leading-none text-white/80 uppercase">{type}</p>
+                </div>
+                <div className="flex flex-wrap gap-x-11 gap-y-9 md:col-span-7">
+                  {items.map((item) => (
+                    <div
+                      className="slide-up flex items-center gap-3.5 leading-none"
+                      key={item.name}
+                    >
+                      <div className="flex h-10 w-10 items-center justify-center md:h-12 md:w-12">
+                        <Image
+                          src={item.icon}
+                          alt={item.name}
+                          width={40}
+                          height={40}
+                          className="h-full w-full object-contain"
+                        />
+                      </div>
+
+                      <span className="text-2xl capitalize">{item.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}

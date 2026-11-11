@@ -1,0 +1,40 @@
+{
+  "name": "Ross Tagiobon",
+  "firstName": "Ross",
+  "alias": "ROSS",
+  "birthDate": "2000-11-26",
+  "location": "Cebu City , Philippines",
+  "siteUrl": "https://your-domain.dev",
+  "email": "rosstagw@gmail.com",
+  "resume": "/resume.pdf",
+  "socials": [
+    {
+      "name": "github",
+      "url": "https://github.com/rtags911"
+    },
+    {
+      "name": "linkedin",
+      "url": "https://www.linkedin.com/in/rjt26/"
+    }
+  ],
+  "heroTitle": [
+    "FRONTEND",
+    "DEVELOPER"
+  ],
+  "heroIntro": "Hi! I'm Ross. A Frontend Developer with hands-on experience building fast, accessible and responsive web apps.",
+  "heroButton": "My Resume",
+  "heroCode": [
+    "Proficient in the latest web technologies and",
+    "frameworks, continuously expanding my skill set",
+    "to stay at the forefront of the industry."
+  ],
+  "aboutStatement": "If it’s slow or confusing, it’s not done yet.",
+  "aboutLead": "Front-end developer. I turn designs into sites that work on a cheap phone as well as they do on a big monitor.",
+  "aboutBody": [
+    "I’ve been coding for the web for a year now. These days it’s React, Next.js and a lot of small details nobody notices until they’re missing.",
+    "Fast pages and accessible markup are where I start, not something I add at the end. I’m happiest on a team that gives honest feedback and doesn’t mind a few questions."
+  ],
+  "aboutTagline": "Coffee first, then code.",
+  "role": "Front-End Developer",
+  "description": "Hi! I'm Ross, a Frontend Developer who enjoys building clean, responsive, and user-friendly websites. I focus on creating smooth digital experiences while continuously learning new technologies and improving my skills."
+}

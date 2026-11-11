@@ -1,0 +1,94 @@
+"use client";
+
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+import { useLayoutEffect, useRef } from "react";
+
+import SectionTitle from "@/src/components/section-title";
+import { useGetExperience } from "@/src/hooks/use-content";
+
+import { LoaderSmall } from "./loader-small";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+export default function Experiences() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { data: experience = [], isLoading } = useGetExperience();
+
+  useLayoutEffect(() => {
+    if (!isLoading && experience.length > 0) {
+      ScrollTrigger.refresh();
+    }
+  }, [isLoading, experience]);
+
+  useGSAP(
+    () => {
+      if (!experience.length) return;
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 60%",
+          end: "bottom 50%",
+          toggleActions: "restart none none reverse",
+          scrub: 1,
+        },
+      });
+
+      tl.from(".experience-item", {
+        y: 50,
+        opacity: 0,
+        stagger: 0.3,
+      });
+    },
+    { scope: containerRef, dependencies: [experience] }
+  );
+
+  useGSAP(
+    () => {
+      if (!experience.length) return;
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "bottom 50%",
+          end: "bottom 20%",
+          scrub: 1,
+        },
+      });
+
+      tl.to(containerRef.current, {
+        y: -150,
+        opacity: 0,
+      });
+    },
+    { scope: containerRef, dependencies: [experience] }
+  );
+
+  return (
+    <section className="py-section" id="my-experience">
+      <div className="container" ref={containerRef}>
+        <SectionTitle title="My Experience" />
+
+        {isLoading ? (
+          <LoaderSmall />
+        ) : experience.length === 0 ? (
+          <p className="dark slide-up text-muted-foreground py-10 text-3xl">
+            There&apos;s no experience added yet
+          </p>
+        ) : (
+          <div className="grid gap-14">
+            {experience.map((item) => (
+              <div key={item._id} className="experience-item">
+                <p className="text-white/80 md:text-xl">{item.company}</p>
+                <p className="mt-3.5 mb-2.5 text-xl leading-6 md:text-4xl">{item.title}</p>
+                <p className="text-white/80 md:text-lg">
+                  {item.startDate} - {item.endDate}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}

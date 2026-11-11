@@ -1,0 +1,68 @@
+[
+  {
+    "_id": "project-1",
+    "slug": "project-1",
+    "name": "Project 1",
+    "year": 2026,
+    "description": "One or two sentences: what this project is, who it's for, and what problem it solves.",
+    "features": [
+      "A key feature you built.",
+      "Another feature worth mentioning.",
+      "Something technically interesting."
+    ],
+    "techStack": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS"
+    ],
+    "liveUrl": "https://example.com",
+    "sourceCode": "https://github.com/your-username/project-1",
+    "thumbnail": "/images/projects/placeholder.png",
+    "sortIndex": 1,
+    "hide": false
+  },
+  {
+    "_id": "project-2",
+    "slug": "project-2",
+    "name": "Project 2",
+    "year": 2026,
+    "description": "One or two sentences: what this project is, who it's for, and what problem it solves.",
+    "features": [
+      "A key feature you built.",
+      "Another feature worth mentioning.",
+      "Something technically interesting."
+    ],
+    "techStack": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS"
+    ],
+    "liveUrl": "https://example.com",
+    "sourceCode": "https://github.com/your-username/project-2",
+    "thumbnail": "/images/projects/placeholder.png",
+    "sortIndex": 2,
+    "hide": false
+  },
+  {
+    "_id": "project-3",
+    "slug": "project-3",
+    "name": "Project 3",
+    "year": 2026,
+    "description": "One or two sentences: what this project is, who it's for, and what problem it solves.",
+    "features": [
+      "A key feature you built.",
+      "Another feature worth mentioning.",
+      "Something technically interesting."
+    ],
+    "techStack": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS"
+    ],
+    "liveUrl": "https://example.com",
+    "sourceCode": "https://github.com/your-username/project-3",
+    "thumbnail": "/images/projects/placeholder.png",
+    "sortIndex": 3,
+    "hide": false
+  }
+]

@@ -1,0 +1,278 @@
+[
+  {
+    "type": "frontend",
+    "items": [
+      {
+        "_id": "html",
+        "name": "HTML",
+        "icon": "/images/stack/html.webp",
+        "type": "frontend",
+        "sortIndex": 1,
+        "hide": false
+      },
+      {
+        "_id": "css",
+        "name": "CSS",
+        "icon": "/images/stack/css.webp",
+        "type": "frontend",
+        "sortIndex": 2,
+        "hide": false
+      },
+      {
+        "_id": "tailwind-css",
+        "name": "Tailwind CSS",
+        "icon": "/images/stack/tailwind-css.webp",
+        "type": "frontend",
+        "sortIndex": 3,
+        "hide": false
+      },
+      {
+        "_id": "bootstrap",
+        "name": "Bootstrap",
+        "icon": "/images/stack/bootstrap.webp",
+        "type": "frontend",
+        "sortIndex": 4,
+        "hide": false
+      },
+      {
+        "_id": "sass",
+        "name": "SASS",
+        "icon": "/images/stack/sass.webp",
+        "type": "frontend",
+        "sortIndex": 5,
+        "hide": true
+      },
+      {
+        "_id": "styled-components",
+        "name": "Styled-Components",
+        "icon": "/images/stack/styled-components.webp",
+        "type": "frontend",
+        "sortIndex": 6,
+        "hide": false
+      },
+      {
+        "_id": "javascript",
+        "name": "JavaScript",
+        "icon": "/images/stack/javascript.webp",
+        "type": "frontend",
+        "sortIndex": 7,
+        "hide": false
+      },
+      {
+        "_id": "typescript",
+        "name": "TypeScript",
+        "icon": "/images/stack/typescript.webp",
+        "type": "frontend",
+        "sortIndex": 8,
+        "hide": false
+      },
+      {
+        "_id": "react",
+        "name": "React",
+        "icon": "/images/stack/react.webp",
+        "type": "frontend",
+        "sortIndex": 9,
+        "hide": false
+      },
+      {
+        "_id": "next-js",
+        "name": "Next.Js",
+        "icon": "/images/stack/next-js.webp",
+        "type": "frontend",
+        "sortIndex": 10,
+        "hide": false
+      },
+      {
+        "_id": "zustand",
+        "name": "Zustand",
+        "icon": "/images/stack/zustand.webp",
+        "type": "frontend",
+        "sortIndex": 11,
+        "hide": false
+      },
+      {
+        "_id": "redux-toolkit",
+        "name": "Redux-Toolkit",
+        "icon": "/images/stack/redux-toolkit.webp",
+        "type": "frontend",
+        "sortIndex": 12,
+        "hide": false
+      },
+      {
+        "_id": "motion",
+        "name": "Motion",
+        "icon": "/images/stack/motion.webp",
+        "type": "frontend",
+        "sortIndex": 13,
+        "hide": false
+      },
+      {
+        "_id": "gsap",
+        "name": "GSAP",
+        "icon": "/images/stack/gsap.webp",
+        "type": "frontend",
+        "sortIndex": 14,
+        "hide": false
+      }
+    ]
+  },
+  {
+    "type": "backend",
+    "items": [
+      {
+        "_id": "node-js",
+        "name": "Node.js",
+        "icon": "/images/stack/node-js.webp",
+        "type": "backend",
+        "sortIndex": 1,
+        "hide": false
+      },
+      {
+        "_id": "express-js",
+        "name": "Express.js",
+        "icon": "/images/stack/express-js.webp",
+        "type": "backend",
+        "sortIndex": 2,
+        "hide": false
+      },
+      {
+        "_id": "hono",
+        "name": "Hono",
+        "icon": "/images/stack/hono.webp",
+        "type": "backend",
+        "sortIndex": 3,
+        "hide": true
+      },
+      {
+        "_id": "trpc",
+        "name": "tRPC",
+        "icon": "/images/stack/trpc.webp",
+        "type": "backend",
+        "sortIndex": 4,
+        "hide": true
+      },
+      {
+        "_id": "supabase",
+        "name": "Supabase",
+        "icon": "/images/stack/supabase.webp",
+        "type": "backend",
+        "sortIndex": 5,
+        "hide": true
+      },
+      {
+        "_id": "mongodb",
+        "name": "MongoDB",
+        "icon": "/images/stack/mongodb.webp",
+        "type": "backend",
+        "sortIndex": 6,
+        "hide": false
+      },
+      {
+        "_id": "neondb",
+        "name": "NeonDB",
+        "icon": "/images/stack/neondb.webp",
+        "type": "backend",
+        "sortIndex": 7,
+        "hide": true
+      }
+    ]
+  },
+  {
+    "type": "mobile",
+    "items": [
+      {
+        "_id": "react-native-expo",
+        "name": "React Native ( Expo )",
+        "icon": "/images/stack/react-native-expo.webp",
+        "type": "mobile",
+        "sortIndex": 1,
+        "hide": false
+      }
+    ]
+  },
+  {
+    "type": "tools",
+    "items": [
+      {
+        "_id": "git",
+        "name": "Git",
+        "icon": "/images/stack/git.webp",
+        "type": "tools",
+        "sortIndex": 1,
+        "hide": false
+      },
+      {
+        "_id": "github",
+        "name": "GitHub",
+        "icon": "/images/stack/github.webp",
+        "type": "tools",
+        "sortIndex": 2,
+        "hide": false
+      },
+      {
+        "_id": "vim",
+        "name": "VIM",
+        "icon": "/images/stack/vim.webp",
+        "type": "tools",
+        "sortIndex": 3,
+        "hide": true
+      },
+      {
+        "_id": "vscode",
+        "name": "VSCODE",
+        "icon": "/images/stack/vscode.webp",
+        "type": "tools",
+        "sortIndex": 4,
+        "hide": false
+      },
+      {
+        "_id": "postman",
+        "name": "Postman",
+        "icon": "/images/stack/postman.webp",
+        "type": "tools",
+        "sortIndex": 5,
+        "hide": false
+      },
+      {
+        "_id": "bruno",
+        "name": "Bruno",
+        "icon": "/images/stack/bruno.webp",
+        "type": "tools",
+        "sortIndex": 6,
+        "hide": true
+      },
+      {
+        "_id": "bun",
+        "name": "Bun",
+        "icon": "/images/stack/bun.webp",
+        "type": "tools",
+        "sortIndex": 7,
+        "hide": true
+      },
+      {
+        "_id": "npm",
+        "name": "NPM",
+        "icon": "/images/stack/npm.webp",
+        "type": "tools",
+        "sortIndex": 8,
+        "hide": true
+      },
+      {
+        "_id": "pnpm",
+        "name": "PNPM",
+        "icon": "/images/stack/pnpm.webp",
+        "type": "tools",
+        "sortIndex": 9,
+        "hide": true
+      },
+      {
+        "_id": "yarn",
+        "name": "Yarn",
+        "icon": "/images/stack/yarn.webp",
+        "type": "tools",
+        "sortIndex": 10,
+        "hide": true
+      }
+    ]
+  }
+]

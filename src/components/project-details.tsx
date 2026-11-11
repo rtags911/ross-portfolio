@@ -1,0 +1,248 @@
+"use client";
+
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+import { useLenis } from "lenis/react";
+import { ArrowDown, ArrowLeft, Code, Expand, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+
+import ImageLightbox from "@/src/components/image-lightbox";
+import TransitionLink from "@/src/components/transition-link";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/src/components/ui/tooltip";
+import { useGetProject } from "@/src/hooks/use-content";
+
+import { LoaderSmall } from "./loader-small";
+import RelatedProjects from "./related-projects";
+
+interface Props {
+  id: string;
+}
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+export default function ProjectDetails({ id }: Props) {
+  const { data: project, isLoading } = useGetProject(id);
+  const lenis = useLenis();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isImageOpen, setIsImageOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isImageOpen) return;
+    lenis?.stop();
+    return () => lenis?.start();
+  }, [isImageOpen, lenis]);
+
+  useLayoutEffect(() => {
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+      lenis?.scrollTo(0, { immediate: true, force: true });
+    };
+
+    scrollToTop();
+    const frame = requestAnimationFrame(scrollToTop);
+    return () => cancelAnimationFrame(frame);
+  }, [id, lenis]);
+
+  useLayoutEffect(() => {
+    if (!isLoading && project) {
+      const frame = requestAnimationFrame(() => ScrollTrigger.refresh());
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [isLoading, project]);
+
+  useGSAP(
+    () => {
+      if (!containerRef.current || !project) return;
+
+      gsap.set(".fade-in-later", {
+        autoAlpha: 0,
+        y: 30,
+      });
+      const tl = gsap.timeline({
+        delay: 0.5,
+      });
+      tl.to(".fade-in-later", {
+        autoAlpha: 1,
+        y: 0,
+        stagger: 0.1,
+      });
+      return () => {
+        tl.kill();
+      };
+    },
+    { scope: containerRef, dependencies: [project, isLoading] }
+  );
+
+  useGSAP(
+    () => {
+      if (!containerRef.current || !project) return;
+      if (window.innerWidth < 992) return;
+
+      const tween = gsap.to("#info", {
+        filter: "blur(3px)",
+        autoAlpha: 0,
+        scale: 0.9,
+        position: "sticky",
+        scrollTrigger: {
+          trigger: "#info",
+          start: "bottom bottom",
+          end: "bottom top",
+          pin: true,
+          pinSpacing: false,
+          scrub: 0.5,
+        },
+      });
+      return () => {
+        tween.kill();
+      };
+    },
+    { scope: containerRef, dependencies: [project, isLoading] }
+  );
+
+  return (
+    <section className="px-6 pt-5 pb-14 md:px-0">
+      <div className="container" ref={containerRef}>
+        <TransitionLink href="/" className="group mb-16 inline-flex h-12 items-center gap-2">
+          <ArrowLeft className="group-hover:text-primary transition-all duration-300 group-hover:-translate-x-1" />
+          Back
+        </TransitionLink>
+        {isLoading ? (
+          <div
+            className="flex min-h-[50vh] items-center justify-center py-10"
+            aria-label="Loading project"
+          >
+            <LoaderSmall />
+          </div>
+        ) : !project ? (
+          <div className="flex min-h-[50vh] items-center justify-center py-10">
+            <p className="dark slide-up text-muted-foreground py-10 text-center text-3xl md:text-4xl">
+              Project not found <span className="text-primary">!</span>
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="top-0 flex lg:min-h-[calc(100dvh-100px)]" id="info">
+              <div className="relative w-full">
+                <div className="mx-auto mb-10 flex max-w-7xl items-start gap-6">
+                  <h1 className="fade-in-later overflow-hidden text-3xl leading-none opacity-0 md:text-6xl">
+                    <span className="cursor inline-block">{project.name}</span>
+                  </h1>
+
+                  <div className="fade-in-later flex items-center gap-4 opacity-0">
+                    {project.sourceCode && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <a
+                            href={project.sourceCode}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            aria-label={`View ${project.name} source code`}
+                            className="hover:text-primary focus-visible:outline-primary rounded-sm outline-offset-4 focus-visible:outline-2"
+                          >
+                            <Code size={30} />
+                          </a>
+                        </TooltipTrigger>
+                        <TooltipContent>View source code</TooltipContent>
+                      </Tooltip>
+                    )}
+                    {project.liveUrl && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            aria-label={`Open ${project.name} live site`}
+                            className="hover:text-primary focus-visible:outline-primary rounded-sm outline-offset-4 focus-visible:outline-2"
+                          >
+                            <ExternalLink size={30} />
+                          </a>
+                        </TooltipTrigger>
+                        <TooltipContent>Open live site</TooltipContent>
+                      </Tooltip>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mx-auto max-w-7xl space-y-7 pb-20">
+                  <div className="fade-in-later">
+                    <p className="mb-3 text-white/80">Year</p>
+                    <span className="cursor text-lg">{project.year}</span>
+                  </div>
+                  <div className="fade-in-later">
+                    <p className="mb-3 text-white/80">Tech & Technique</p>
+
+                    <div className="text-lg">
+                      <span className="cursor">{project.techStack.join(", ")}</span>
+                    </div>
+                  </div>
+                  <div className="fade-in-later space-y-7">
+                    <p className="mb-3 text-white/80">Description</p>
+
+                    {project.description && (
+                      <div className="markdown-text cursor text-lg">
+                        <p>{project.description}</p>
+                      </div>
+                    )}
+
+                    <p className="mb-3 text-white/80">Key Features</p>
+
+                    {project.features && (
+                      <div className="markdown-text cursor text-lg">
+                        <ul>
+                          {project.features.map((feat) => (
+                            <li key={feat}>{feat}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="fade-in-later hidden items-center gap-2 text-xs tracking-[0.2em] text-white/40 uppercase lg:flex">
+                  <ArrowDown className="size-4 animate-bounce" aria-hidden="true" />
+                  Scroll to explore
+                </div>
+              </div>
+            </div>
+
+            <figure className="fade-in-later relative mx-auto max-w-7xl">
+              <div className="group relative aspect-[750/400] w-full overflow-hidden bg-black">
+                <Image
+                  src={project.thumbnail}
+                  alt={`${project.name} project preview`}
+                  fill
+                  sizes="(min-width: 1280px) 1148px, calc(100vw - 3rem)"
+                  className="object-cover object-center transition-transform duration-700"
+                />
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      onClick={() => setIsImageOpen(true)}
+                      aria-label={`View ${project.name} image full screen`}
+                      className="hover:bg-primary absolute top-4 right-4 inline-flex size-8 cursor-pointer items-center justify-center bg-gray-950/70 text-white opacity-100 transition-all hover:text-white lg:size-12 lg:opacity-0 lg:group-hover:opacity-100"
+                    >
+                      <Expand />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>View full screen</TooltipContent>
+                </Tooltip>
+              </div>
+            </figure>
+
+            <ImageLightbox
+              src={project.thumbnail}
+              alt={`${project.name} project preview`}
+              open={isImageOpen}
+              onOpenChange={setIsImageOpen}
+            />
+
+            <RelatedProjects currentProjectId={project._id} />
+          </>
+        )}
+      </div>
+    </section>
+  );
+}
