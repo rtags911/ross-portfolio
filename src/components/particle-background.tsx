@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "../lib/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
@@ -8,7 +7,7 @@ import { useMemo, useRef } from "react";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const STAR_COUNT = 260;
+const STAR_COUNT = 160; // the painted sky (starry-sky.tsx) carries the texture; fewer DOM stars keep scrolling smooth
 
 const LAYERS = ["far", "near"] as const;
 
@@ -128,7 +127,7 @@ export default function ParticleBackground({ subtle = false }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const starsByLayer = useMemo(() => {
-    const stars = Array.from({ length: subtle ? 160 : STAR_COUNT }, (_, i) => buildStar(i));
+    const stars = Array.from({ length: subtle ? 100 : STAR_COUNT }, (_, i) => buildStar(i));
     const grouped: Record<StarLayer, Star[]> = { far: [], near: [] };
     stars.forEach((star) => grouped[star.layer].push(star));
     return {
@@ -148,7 +147,7 @@ export default function ParticleBackground({ subtle = false }: Props) {
 
       if (!reduced) {
         starsByLayer.ordered.forEach((cfg, i) => {
-          if (cfg.flicker > 0) buildTwinkle(elements[i], cfg);
+          if (cfg.flicker >= 0.7) buildTwinkle(elements[i], cfg); // only the strong flickerers: each twinkle is a never-ending animation
         });
 
         const scrollLayers = container.querySelectorAll<HTMLElement>(".star-scroll");
@@ -257,7 +256,7 @@ export default function ParticleBackground({ subtle = false }: Props) {
       ref={containerRef}
       aria-hidden="true"
       style={subtle ? { opacity: 0.24 } : undefined}
-      className={cn("pointer-events-none fixed inset-0 -z-10 overflow-hidden", "mix-blend-screen")}
+      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
       {LAYERS.map((layer) => (
         <div key={layer} className="star-scroll absolute -inset-[15%] will-change-transform">

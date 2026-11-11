@@ -67,26 +67,35 @@ function flow(x: number, y: number, w: number, h: number) {
   return [vx / m, vy / m] as const;
 }
 
+const LIGHTS = [...STARS, MOON];
+
 /** Distance (in viewport-min units) to the nearest light, used to warm the strokes around stars. */
 function nearLight(x: number, y: number, w: number, h: number) {
   const s = Math.min(w, h);
   let best = Infinity;
-  for (const l of [...STARS, MOON]) {
+  for (const l of LIGHTS) {
     const d = Math.hypot(x - l.x * w, y - l.y * h) / s - l.r * 2.2;
     best = Math.min(best, d);
   }
   return best;
 }
 
-function paint(canvas: HTMLCanvasElement) {
-  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+/**
+ * Paints the sky in small time slices (about 6 ms each) so the browser keeps animating in between instead of
+ * freezing while 10–16k strokes are drawn. Returns a function that stops an unfinished paint (on resize/unmount).
+ */
+function paint(canvas: HTMLCanvasElement): () => void {
+  let cancelled = false;
+  let timer = 0;
+  // 1x resolution: the soft brushwork doesn't need extra sharpness, and it's up to 2.25x fewer pixels to draw.
+  const dpr = 1;
   const w = window.innerWidth;
   const h = Math.max(window.innerHeight, screen.height * 0.9); // mobile URL bar: paint tall once
   canvas.width = Math.round(w * dpr);
   canvas.height = Math.round(h * dpr);
   (canvas.parentElement as HTMLElement).style.height = `${h}px`; // glows share this box
   const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+  if (!ctx) return () => {};
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const rnd = mulberry32(1889);
   const s = Math.min(w, h);
@@ -99,10 +108,19 @@ function paint(canvas: HTMLCanvasElement) {
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, w, h);
 
-  // Brushstrokes along the currents.
+  // Brushstrokes along the currents, a slice at a time.
   ctx.lineCap = "round";
-  const count = Math.min(26000, Math.round((w * h) / 75));
-  for (let i = 0; i < count; i++) {
+  const count = Math.min(16000, Math.round((w * h) / 110));
+  let i = 0;
+  const strokesSlice = () => {
+    if (cancelled) return;
+    const until = performance.now() + 6;
+    for (; i < count && performance.now() < until; i++) stroke();
+    if (i < count) timer = window.setTimeout(strokesSlice, 0);
+    else finish();
+  };
+
+  const stroke = () => {
     let x = rnd() * w;
     let y = rnd() * h;
     const warm = nearLight(x, y, w, h);
@@ -110,9 +128,10 @@ function paint(canvas: HTMLCanvasElement) {
     const pal = gold ? GOLDS : BLUES;
     // Lighter blues higher up and near the swirls, darker toward the ground.
     const lift = Math.max(0, 1 - y / h - 0.15) + (rnd() - 0.5) * 0.5;
-    ctx.strokeStyle = pal[Math.min(pal.length - 1, Math.max(0, Math.floor((gold ? rnd() : lift) * pal.length)))];
+    ctx.strokeStyle =
+      pal[Math.min(pal.length - 1, Math.max(0, Math.floor((gold ? rnd() : lift) * pal.length)))];
     ctx.globalAlpha = gold ? 0.55 + rnd() * 0.35 : 0.28 + rnd() * 0.4;
-    ctx.lineWidth = 1.2 + rnd() * 2.4;
+    ctx.lineWidth = 1.4 + rnd() * 2.6; // a touch wider, so fewer strokes still cover the sky
     ctx.beginPath();
     ctx.moveTo(x, y);
     const steps = gold ? 3 + Math.floor(rnd() * 4) : 5 + Math.floor(rnd() * 9);
@@ -123,58 +142,67 @@ function paint(canvas: HTMLCanvasElement) {
       ctx.lineTo(x, y);
     }
     ctx.stroke();
-  }
-
-  // Halo stars: rings of short gold and pale-blue dashes around a bright core.
-  const halo = (cx: number, cy: number, r: number, rings: number) => {
-    for (let ring = rings; ring >= 1; ring--) {
-      const rr = r * (0.6 + ring * 0.55);
-      const dashes = Math.round(rr * 1.4);
-      for (let d = 0; d < dashes; d++) {
-        const a0 = (d / dashes) * Math.PI * 2 + rnd() * 0.2;
-        ctx.strokeStyle = ring % 2 ? GOLDS[Math.floor(rnd() * 3)] : "#cfe0f2";
-        ctx.globalAlpha = 0.25 + 0.5 / ring;
-        ctx.lineWidth = 1.4 + rnd() * 1.6;
-        ctx.beginPath();
-        ctx.arc(cx, cy, rr + (rnd() - 0.5) * 2, a0, a0 + 0.12 + rnd() * 0.12);
-        ctx.stroke();
-      }
-    }
-    const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 1.1);
-    core.addColorStop(0, "#fff6d6");
-    core.addColorStop(0.45, "#f6dc8f");
-    core.addColorStop(1, "rgba(227,163,58,0)");
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = core;
-    ctx.beginPath();
-    ctx.arc(cx, cy, r * 1.1, 0, Math.PI * 2);
-    ctx.fill();
   };
-  for (const st of STARS) halo(st.x * w, st.y * h, st.r * s, 4);
 
-  // Crescent moon: a halo, a gold disc, and a sky-coloured disc biting into it.
-  const mx = MOON.x * w;
-  const my = MOON.y * h;
-  const mr = MOON.r * s;
-  halo(mx, my, mr, 6);
-  ctx.globalAlpha = 1;
-  ctx.fillStyle = "#f0c46b";
-  ctx.beginPath();
-  ctx.arc(mx, my, mr, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = "#16244a";
-  ctx.beginPath();
-  ctx.arc(mx + mr * 0.45, my - mr * 0.25, mr * 0.85, 0, Math.PI * 2);
-  ctx.fill();
+  // Stars, moon and veil go on top once all strokes are down.
+  const finish = () => {
+    // Halo stars: rings of short gold and pale-blue dashes around a bright core.
+    const halo = (cx: number, cy: number, r: number, rings: number) => {
+      for (let ring = rings; ring >= 1; ring--) {
+        const rr = r * (0.6 + ring * 0.55);
+        const dashes = Math.round(rr * 1.4);
+        for (let d = 0; d < dashes; d++) {
+          const a0 = (d / dashes) * Math.PI * 2 + rnd() * 0.2;
+          ctx.strokeStyle = ring % 2 ? GOLDS[Math.floor(rnd() * 3)] : "#cfe0f2";
+          ctx.globalAlpha = 0.25 + 0.5 / ring;
+          ctx.lineWidth = 1.4 + rnd() * 1.6;
+          ctx.beginPath();
+          ctx.arc(cx, cy, rr + (rnd() - 0.5) * 2, a0, a0 + 0.12 + rnd() * 0.12);
+          ctx.stroke();
+        }
+      }
+      const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 1.1);
+      core.addColorStop(0, "#fff6d6");
+      core.addColorStop(0.45, "#f6dc8f");
+      core.addColorStop(1, "rgba(227,163,58,0)");
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = core;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 1.1, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    for (const st of STARS) halo(st.x * w, st.y * h, st.r * s, 4);
 
-  // Keep text readable: a soft night veil, a little heavier on the left where the hero copy sits.
-  ctx.globalAlpha = 1;
-  const veil = ctx.createLinearGradient(0, 0, w, 0);
-  veil.addColorStop(0, "rgba(13,16,20,0.62)");
-  veil.addColorStop(0.5, "rgba(13,16,20,0.42)");
-  veil.addColorStop(1, "rgba(13,16,20,0.3)");
-  ctx.fillStyle = veil;
-  ctx.fillRect(0, 0, w, h);
+    // Crescent moon: a halo, a gold disc, and a sky-coloured disc biting into it.
+    const mx = MOON.x * w;
+    const my = MOON.y * h;
+    const mr = MOON.r * s;
+    halo(mx, my, mr, 6);
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = "#f0c46b";
+    ctx.beginPath();
+    ctx.arc(mx, my, mr, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#16244a";
+    ctx.beginPath();
+    ctx.arc(mx + mr * 0.45, my - mr * 0.25, mr * 0.85, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Keep text readable: a soft night veil, a little heavier on the left where the hero copy sits.
+    ctx.globalAlpha = 1;
+    const veil = ctx.createLinearGradient(0, 0, w, 0);
+    veil.addColorStop(0, "rgba(13,16,20,0.62)");
+    veil.addColorStop(0.5, "rgba(13,16,20,0.42)");
+    veil.addColorStop(1, "rgba(13,16,20,0.3)");
+    ctx.fillStyle = veil;
+    ctx.fillRect(0, 0, w, h);
+  };
+
+  strokesSlice();
+  return () => {
+    cancelled = true;
+    window.clearTimeout(timer);
+  };
 }
 
 export default function StarrySky({ subtle = false }: { subtle?: boolean }) {
@@ -187,10 +215,12 @@ export default function StarrySky({ subtle = false }: { subtle?: boolean }) {
       if (!canvas) return;
 
       let width = 0;
+      let stopPaint = () => {};
       const draw = () => {
         if (window.innerWidth === width) return; // height-only changes (mobile URL bar) don't need a repaint
         width = window.innerWidth;
-        paint(canvas);
+        stopPaint(); // a resize mid-paint starts over at the new size
+        stopPaint = paint(canvas);
       };
       // Paint after first render so it never blocks the preloader.
       const first = window.setTimeout(draw, 0);
@@ -220,6 +250,7 @@ export default function StarrySky({ subtle = false }: { subtle?: boolean }) {
 
       return () => {
         window.clearTimeout(first);
+        stopPaint();
         window.clearTimeout(timer);
         window.removeEventListener("resize", onResize);
       };
@@ -237,18 +268,18 @@ export default function StarrySky({ subtle = false }: { subtle?: boolean }) {
       <div className="absolute inset-x-0 top-0 h-full">
         <canvas ref={canvasRef} className="block h-full w-full" />
         {STARS.map((st, i) => (
-        <span
-          key={i}
-          className="star-glow"
-          style={
-            {
-              left: `${st.x * 100}%`,
-              top: `${st.y * 100}%`,
-              "--r": `${st.r * 9}vmin`,
-              animationDelay: `${(i * 0.73) % 5}s`,
-            } as React.CSSProperties
-          }
-        />
+          <span
+            key={i}
+            className="star-glow"
+            style={
+              {
+                left: `${st.x * 100}%`,
+                top: `${st.y * 100}%`,
+                "--r": `${st.r * 9}vmin`,
+                animationDelay: `${(i * 0.73) % 5}s`,
+              } as React.CSSProperties
+            }
+          />
         ))}
       </div>
     </div>
