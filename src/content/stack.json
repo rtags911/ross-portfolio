@@ -274,5 +274,26 @@
         "hide": true
       }
     ]
+  },
+  {
+    "type": "CRM",
+    "items": [
+      {
+        "_id": "tool-1794477511232",
+        "name": "Wordpress",
+        "icon": "/images/stack/wordpress.png",
+        "type": "CRM",
+        "sortIndex": 1,
+        "hide": false
+      },
+      {
+        "_id": "tool-1794477519123",
+        "name": "Shopify",
+        "icon": "/images/stack/shopify.png",
+        "type": "CRM",
+        "sortIndex": 2,
+        "hide": false
+      }
+    ]
   }
 ]
