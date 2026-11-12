@@ -1,68 +1,109 @@
 [
   {
-    "_id": "project-1",
-    "slug": "project-1",
-    "name": "Project 1",
+    "_id": "ember-kitchen",
+    "slug": "ember-kitchen",
+    "name": "Ember Kitchen",
     "year": 2026,
-    "description": "One or two sentences: what this project is, who it's for, and what problem it solves.",
+    "description": "A website for a fictional wood-fired café with online pickup ordering: a menu with categories, a bag, pickup times worked out from opening hours, and a kitchen board that moves orders from new to ready.",
     "features": [
-      "A key feature you built.",
-      "Another feature worth mentioning.",
-      "Something technically interesting."
+      "Menu with category tabs and add-to-bag",
+      "Pickup times worked out from opening hours and the café's time zone",
+      "Order form checked in the browser and on the server",
+      "Kitchen board that moves orders from new to preparing to ready",
+      "Scroll entrances and an \"oven door\" opening, off for users who turn off animations",
+      "Responsive, keyboard-accessible design"
     ],
     "techStack": [
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS"
+      "Next.js, React, TypeScript",
+      "Tailwind CSS",
+      "Zod",
+      "GSAP ScrollTrigger",
+      "GitHub Pages"
     ],
     "liveUrl": "https://example.com",
     "sourceCode": "https://github.com/your-username/project-1",
-    "thumbnail": "/images/projects/placeholder.png",
+    "thumbnail": "/images/projects/ember-kitchen.png",
     "sortIndex": 1,
     "hide": false
   },
   {
-    "_id": "project-2",
-    "slug": "project-2",
-    "name": "Project 2",
+    "_id": "kestrel-hill",
+    "slug": "kestrel-hill",
+    "name": "Kestrel Hill Observatory",
     "year": 2026,
-    "description": "One or two sentences: what this project is, who it's for, and what problem it solves.",
+    "description": "A responsive landing page for a fictional public observatory, with a Moon phase calculator, a ticket builder that totals as you go, and scroll animations.",
     "features": [
-      "A key feature you built.",
-      "Another feature worth mentioning.",
-      "Something technically interesting."
+      "Moon phase calculator for the next six Fridays",
+      "Hover-to-preview list of the season’s sky",
+      "Ticket builder with a live total",
+      "Evening timeline and FAQ accordion",
+      "Parallax and scroll animations, off for users who turn off animations",
+      "Responsive, keyboard-accessible design"
     ],
     "techStack": [
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS"
+      "HTML, CSS",
+      "JavaScript",
+      "GSAP Lenis",
+      "GitHub Pages"
     ],
-    "liveUrl": "https://example.com",
-    "sourceCode": "https://github.com/your-username/project-2",
-    "thumbnail": "/images/projects/placeholder.png",
+    "liveUrl": "https://rtags911.github.io/kestrel-hill/",
+    "sourceCode": "https://github.com/rtags911/kestrel-hill",
+    "thumbnail": "/images/projects/kestrel-hill.png",
     "sortIndex": 2,
     "hide": false
   },
   {
-    "_id": "project-3",
-    "slug": "project-3",
-    "name": "Project 3",
-    "year": 2026,
-    "description": "One or two sentences: what this project is, who it's for, and what problem it solves.",
+    "_id": "corn-pest-detector",
+    "slug": "corn-pest-detector",
+    "name": "Corn Pest Detector",
+    "year": 2022,
+    "description": "This is a thesis project focused on developing an AI-powered Corn Pest and Disease Detection Application using machine learning and computer vision.\n\nThe goal is to help farmers identify possible corn pests and diseases by taking a picture of an affected corn plant. The AI model analyzes the image, identifies the possible pest or disease, and provides information to help users understand the problem.\n\nThe application will use Flutter for the mobile app UI and TensorFlow for AI model development and image classification.",
     "features": [
-      "A key feature you built.",
-      "Another feature worth mentioning.",
-      "Something technically interesting."
+      "Capture images using the phone camera.",
+      "Upload images from the gallery.",
+      "Detect corn pests and diseases using TensorFlow.",
+      "Identify the detected pest or disease.",
+      "Display AI prediction confidence percentage.",
+      "Show descriptions, symptoms, and affected plant areas.",
+      "Provide recommended treatments and prevention methods.",
+      "Save previous detection results."
     ],
     "techStack": [
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS"
+      "Flutter",
+      "TensorFlow / Keras",
+      "TensorFlow Lite",
+      "OpenCV",
+      "Firebase / Firestore"
     ],
-    "liveUrl": "https://example.com",
-    "sourceCode": "https://github.com/your-username/project-3",
+    "sourceCode": "https://github.com/rtags911/Corn-Pest-Detctor",
     "thumbnail": "/images/projects/placeholder.png",
     "sortIndex": 3,
     "hide": false
+  },
+  {
+    "_id": "bizpulse-dashboard",
+    "slug": "bizpulse-dashboard",
+    "name": "BizPulse Dashboard",
+    "year": 2026,
+    "description": "An admin analytics dashboard for a fictional courts and café business, with period-over-period KPIs, revenue and busy-hours charts, and a searchable orders table on 90 days of demo data.",
+    "features": [
+      "KPI strip compared with the previous period",
+      "Revenue, weekday and busy-hours heatmap charts",
+      "Orders table with search, type filter and sorting",
+      "Date range and filters saved in the URL",
+      "CSV export of the filtered orders",
+      "Light and dark mode, responsive down to phones"
+    ],
+    "techStack": [
+      "Next.js, TypeScript",
+      "Tailwind CSS",
+      "Recharts",
+      "GitHub Pages"
+    ],
+    "thumbnail": "/images/projects/bizpulse-dashboard.png",
+    "sortIndex": 4,
+    "hide": false,
+    "liveUrl": "https://rtags911.github.io/bizpulse-dashboard/",
+    "sourceCode": "https://github.com/rtags911/bizpulse-dashboard"
   }
 ]
